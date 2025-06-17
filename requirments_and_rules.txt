@@ -1,0 +1,325 @@
+# do not use moviepy and show python libs use the fast one 
+
+Whole task is to create 
+ #  A lightweigh gui software using python 
+ # choose  folder paths you have to get random media videos  and image  data form 
+#  chooose random bgm from a bgm folder 
+#  can change output quality settings 
+import json 
+
+default_data = {
+       "ANCHOR_POSITIONS": {
+        "top-left": ["0+{mx}", "0+{my}"],
+        "top-right": ["W-w-{mx}", "0+{my}"],
+        "bottom-left": ["0+{mx}", "H-h-{my}"],
+        "bottom-right": ["W-w-{mx}", "H-h-{my}"],
+        "center": ["(W-w)/2", "(H-h)/2"]
+      },
+       "_size_presets": {
+        "small_meme": {
+          "method": "scale",
+          "width": "min(iw\\\\, W*0.3)",
+          "height": -1
+        },
+        "medium_meme": {
+          "method": "scale",
+          "width": "min(iw\\\\, W*0.4)",
+          "height": -1
+        },
+        "large_meme": {
+          "method": "scale",
+          "width": "min(iw\\\\, W*0.5)",
+          "height": -1
+        }
+      },
+      "final": {
+        "hwaccel": "cuda",
+        "resolution": [1080, 1920],
+        "fps": 30,
+        "_encoding_profiles": {
+          "none": {
+            "vcodec": "libx264",
+            "preset": "medium",
+            "crf": 21,
+            "tune": "film",
+            "extra_args": [
+              "-x264-params keyint=60:min-keyint=60",
+              "-movflags +faststart",
+              "-pix_fmt yuv420p"
+            ]
+          },
+          "qsv": {
+            "vcodec": "h264_qsv",
+            "preset": "faster",
+            "vquality": 24,
+            "extra_args": [
+              "-look_ahead_depth 4",
+              "-extbrc 1",
+              "-low_power on",
+              "-b_strategy 1",
+              "-adaptive_i 1",
+              "-profile:v high"
+            ]
+          },
+          "cuda": {
+            "vcodec": "h264_nvenc",
+            "preset": "p6",
+            "cq": 23,
+            "tune": "hq",
+            "extra_args": [
+              "-rc:v vbr",
+              "-b_ref_mode middle",
+              "-spatial_aq 1",
+              "-temporal_aq 1",
+              "-cqm flat"
+            ]
+          }
+        },
+        "acodec": "aac",
+        "abr": "160k",
+        "ar": 48000,
+        "threads": 8,
+        "buffer_size": "4000k",
+        "_quality_presets": {
+          "fast": {"crf": 23, "vquality": 26, "cq": 25},
+          "balanced": {"crf": 21, "vquality": 24, "cq": 23},
+          "high": {"crf": 18, "vquality": 22, "cq": 21}
+        },
+        "quality": "balanced"
+      },
+
+}
+
+
+ENABLE_HOOK = False
+ENABLE_TRANSITION = True
+ENABLE_SFX = False
+ENABLE_ADDITONAL_SFX = False
+ENABLE_LUTS = False
+ENABLE_SUBTITLE =True
+ENABLE_GREENSCREEN_OVERLAY = False
+ENABLE_STICKERS = False
+ENABLE_GIFS = False
+ENABLE_WATERMARK = True
+ENABLE_BGM = True
+ENABLE_CINEMATIC_EFFECT = False
+ENABLE_ASTHETIC_FRAME = False
+ENABLE_OUTRO = True
+
+
+FINAL_FPS = 30
+FINAL_RESOLUTION = [1080 , 1920]
+FINAL_CODEC = "qsv"    #cuda , qsv , none
+
+
+#folder to use with some settings and presets
+
+#voiceover presets to use 
+voiceover_volume = 1.1   #110 ^ volume so it clearly 
+output_folder = "./output"
+voiceover_start = 0
+voiceover_folder = "./assets/voiceovers" 
+
+def select_voiceover(default_data, output_folder , voiceover_folder , voiceover_volume ,voiceover_start):   #this will get a folder of voiceover , select a random voicover ,that is not same name in output folder , if the output folder has same name as voiceover file name it means the video for that voiceover is already created so i mean skip if already processed 
+
+
+
+
+#main clip function with settings 
+#combine intro + (images + video)
+ENABLE_INTRO = False
+main_clips_intro_folder = "./intro"  # IF ENABLE_INTRO  IS FALSE THEN DO NOT ADD INTRO  , if it is set true then add it first video should be from intro 
+main_clips_videos_folders =["./videos","./more_randomvideos"]
+main_clips_images_folder= ["./images" ,"./darkimages"] 
+unique_assets = True  # do not select the already selected images , videos 
+image_percentage = 40   # 40 percent of selected assets sholuld be images mix both 
+
+transitions =null  # by default if enable transititon is on then add form the below 
+if(ENABLE_TRANSITION):
+ transitions = {"in": null, "out": "fade"}  # ENABLE_TRANSITION  is on  then apply it other wise set 
+video_mode ="full_clip" #"full_clip", "start_random", "split_subclips", "tiny_subclips
+def get_main_clips_data(transitions,ENABLE_INTRO ,unique_assets ,image_percentage ,video_mode ,main_clips_intro_folder , main_clips_videos_folders , main_clips_images_folder):
+
+
+#outro folder  pick a random outro video 
+if(ENABLE_OUTRO):
+  outro_folder = "./outro"   add the below things too in the function 
+#   #     "path": "./outro/final_outro.mp4",
+#         "trim": {"start": 0, "end": 10},
+#         "type": "video",
+#         "transitions": {"in": "fade", "out": null}
+def addoutro(outro_folder , transitions):
+  
+
+
+
+# asthetic frame 
+asthetic_frame = null
+if(ENABLE_ASTHETIC_FRAME):
+  asthetic_frame= "./frames/meme_border.png"
+position = "center"
+margin= {"x": 0, "y": 0} 
+size = {
+          "method": "stretch",
+          "width": "W",
+          "height": "H"
+}
+def add_asthetic_frame(asthetic_frame,position,margin):
+  
+
+
+#watermark add
+if(ENABLE_WATERMARK):
+  watermark_path = "./branding/logo.png"
+  watermark_position = "top-left"
+  watermark_margin = {"x": "W*0.02", "y": "H*0.02"}
+
+  #ADD THIS TOO HERE   "when": {"start": 0, "end": 99999},
+        # "anchor": {
+        #   "position": "top-left",
+        #   "margin": {"x": "W*0.02", "y": "H*0.02"}
+        # },
+        # "size": {
+        #   "method": "scale",
+        #   "width": "W*0.08",
+        #   "height": -1
+        # }
+def add_watermark(watermark_path,watermark_position,watermark_margin):  #add all the things from upper to add in json or dict data
+
+#bgm add
+if(ENABLE_BGM):
+  bgm_path = "./audio/trending_song.mp3"
+  bgm_loop = true
+  bgm_volume = 0.25
+  bgm_start = 0
+  bgm_end = 99999
+def add_bgm(bgm_path,bgm_loop,bgm_volume,bgm_start,bgm_end):
+
+#cinematic_ effect add
+if(ENABLE_CINEMATIC_EFFECT):
+  cinematic_effect_path ="./effects/rain_overlay.mov"
+  cinematic_effect_when = {"start": 0, "end": 9999}
+# " "when": {"start": 0, "end": 9999},
+#         "size": {
+#           "method": "stretch",
+#           "width": "W",
+#           "height": "H"
+#         },
+#         "anchor": { "position": "center", "margin": {"x":0, "y":0}},
+#         "opacity": 0.4
+#       },
+def add_cinematic_effect(cinematic_effect_path,cinematic_effect_when):
+
+
+
+# now that section which need some more critical thinking to the llm
+subtitle_folder =null
+lut_file =null
+
+#sub
+if( ENABLE_SUBTITLE):
+  # actuall you have to select the subtitl from then folder 
+  subtitle_folder ="./one_to_four_word_subtitle" # actuall subtitle file name is same name as voiceover file name so you have to use that from the 
+
+
+if (ENABLE_LUTS):
+  lut_file = "./color/teal_and_orange.cube"
+
+def filter_add( subtitle_folder ,lut_file):
+
+
+
+# gif , sfx , sticker , greenscreen video  these need some more planning 
+# you have to use a subtitle folder which contain full sentence per timestamp , you have to use sentiment analysis on every senetece and use the getting emotions 
+
+#gifs 
+
+gif_folder = null
+
+if(ENABLE_GIFS):
+  gif_folder = "./gifs"
+  subtitle_folder_to_use_for_sentiment_analysis = "./full_sentence_subtitle"  # use this folder get the subtitle which is same name as voiceover file name 
+  # use that sentences from subtitle timestam get the emotion  form it and put it in path also add a good timestamp where the emotion is high 
+# do it for  every sentece where sentiment is higher then .7   , 
+
+# gif categorized in emotion-named subfolders (e.g. joy/admiration/). there are nearly 29 or can say 28  emotion subfolder for gifs
+
+
+#   add this too 
+        #   "loop": {"mode": "shortest", "count": 1},
+        #   "when": {"start": 6.5, "end": 9.2},
+        #   "anchor": {
+        #     "position": "bottom-left",
+        #     "margin": {"x": "W*0.03", "y": "H*0.03"}
+        #   },
+        #   "size": "@_size_presets.small_meme"
+        # }
+
+def add_gif(gif_folder): # add other things too dynamically select the start and end time accoding to the timestamp where emotion is high 
+
+
+# sticker 
+find and set the sticker same way as gif 
+sticker_folder_path = null
+
+if(ENABLE_STICKERS):
+  sticker_folder_path = "./stickers"  
+  size= small_meme
+  position = "top-left"
+  margin = {"x": "W*0.04", "y": "H*0.04"}
+  subtitle_folder_to_use_for_sentiment_analysis = "./full_sentence_subtitle"  # use this folder get the subtitle which is same name as voiceover file name 
+  #add this too  {
+        #   "path": "./stickers/facepalm.png",
+        #   "when": {"start": 7.8, "end": 9.5},    # add the time accrding to the subtitle timestamp per sentence  ranomly dycamic slect the time when tot show  
+        #   "anchor": {
+        #     "position": "top-left",
+        #     "margin": {"x": "W*0.04", "y": "H*0.04"}
+        #   },
+        #   "size": "@_size_presets.small_meme"
+
+def add_sticker(sticker_folder_path): add other things too like position etc etc 
+
+
+
+# green screen video or meme  with audio 
+
+# add like this 
+        # {
+        #   "path": "./memes/surprised_pikachu.mp4",
+        #   "when": {"start": 3.5, "end": 6},
+        #   "filter": {
+        #     "type": "chromakey",
+        #     "color": "0x00ff00",
+        #     "similarity": 0.35,
+        #     "blend": 0.15
+        #   },
+        #   "anchor": {
+        #     "position": "top-right",
+        #     "margin": {"x": "W*0.04", "y": "H*0.04"}
+        #   },
+        #   "size": {
+        #     "method": "scale",
+        #     "width": "min(iw\\\\, W*0.35)",
+        #     "height": -1
+        #   },
+        #   "volume": 0.4
+    # },
+
+
+
+# additional sfx  
+
+# add the additinal sfx at random timestams within the duration of voiceover because after voiceover outro may be play that did not need sfx   to add  additional sfx 
+# also sfx does not overlay each other  , and then quantity of sfx should not that high
+addition_sfx_folder = null
+max_sfx_per_minute = 3
+# now max only 3 sfx can come inside 1 minute duratio 
+additon_sfx = null
+if(ENABLE_ADDITONAL_SFX):
+  addition_sfx_folder ="./additional_sfx"
+  voluem_additon_sfx = 0.8
+        # {"path": "./sfx/sad_trombone.wav", "start": 12.3, "volume": 0.8}
+def addition_sfx(additonal_sfx_folder ,voluem_additon_sfx ,max_sfx_per_minute )
+
+
+ the end  goal is to automate the variable maker 
