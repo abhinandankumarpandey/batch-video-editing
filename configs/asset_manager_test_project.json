@@ -1,0 +1,22 @@
+{
+  "project_name": "Asset Manager Test",
+  "voiceover_folder": "assets/voiceovers",
+  "output_folder": "output",
+  "main_clips_videos_folders": [
+    "assets/videos"
+  ],
+  "main_clips_images_folder": [
+    "assets/images"
+  ],
+  "image_percentage": 30,
+  "unique_assets": true,
+  "num_main_clips_target": 5,
+  "default_image_display_duration": 2.5,
+  "final": {
+    "resolution": [
+      100,
+      100
+    ],
+    "fps": 10
+  }
+}

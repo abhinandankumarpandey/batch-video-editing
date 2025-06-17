@@ -1,0 +1,38 @@
+{
+  "project_name": "Initial Test Project",
+  "assets_base_path": "./assets",
+
+  "ENABLE_INTRO": true,
+  "ENABLE_OUTRO": true,
+  "ENABLE_WATERMARK": true,
+  "ENABLE_BGM": true,
+
+  "intro_folder": "intros",
+  "main_clips_videos_folders": ["videos"],
+  "main_clips_images_folder": ["images"],
+  "outro_folder": "outros",
+  "watermark_path": "branding/logo.png",
+  "bgm_folder": "audio",
+  "voiceover_folder": "voiceovers",
+
+  "image_percentage": 50,
+  "unique_assets": true,
+  "num_main_clips_target": 4,
+  "default_image_display_duration": 2.5,
+
+  "watermark_params": {
+    "position_x": "W-w-10",
+    "position_y": "10",
+    "width_is_fraction_of_video": true,
+    "width": "0.1"
+  },
+  "bgm_volume": 0.1,
+
+  "final": {
+    "resolution": [640, 360],
+    "fps": 24,
+    "selected_encoder_profile": "none",
+    "quality": "fast",
+    "output_folder": "./output"
+  }
+}

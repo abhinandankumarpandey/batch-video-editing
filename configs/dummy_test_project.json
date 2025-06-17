@@ -1,0 +1,14 @@
+{
+  "project_name": "Test Video 001",
+  "ENABLE_INTRO": true,
+  "ENABLE_WATERMARK": true,
+  "voiceover_to_use": "assets/voiceovers/sample_vo.mp3",
+  "final": {
+    "resolution": [
+      1280,
+      720
+    ],
+    "quality": "fast",
+    "selected_encoder_profile": "none"
+  }
+}
