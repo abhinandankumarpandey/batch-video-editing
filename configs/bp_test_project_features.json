@@ -1,0 +1,36 @@
+{
+  "project_name": "BP Features Full Test",
+  "assets_base_path": "./assets",
+  "output_folder": "./output",
+  "voiceover_folder": "voiceovers",
+  "main_clips_videos_folders": [
+    "videos"
+  ],
+  "main_clips_images_folder": [
+    "images"
+  ],
+  "bgm_folder": "audio",
+  "watermark_path": "branding/test_logo.png",
+  "image_percentage": 30,
+  "num_main_clips_target": 3,
+  "default_image_display_duration": 1.5,
+  "ENABLE_INTRO": false,
+  "ENABLE_OUTRO": false,
+  "ENABLE_WATERMARK": true,
+  "ENABLE_BGM": true,
+  "bgm_volume": 0.1,
+  "watermark_params": {
+    "position_x": "W-w-5",
+    "position_y": "5",
+    "fixed_width": "50"
+  },
+  "final": {
+    "resolution": [
+      320,
+      240
+    ],
+    "fps": 15,
+    "quality": "fast",
+    "selected_encoder_profile": "none"
+  }
+}
