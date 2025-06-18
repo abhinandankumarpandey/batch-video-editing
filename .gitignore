@@ -1,5 +1,30 @@
+# Python
 __pycache__/
-*.pyc
+*.py[cod]
+*.class
+
+# Virtual environment
+.venv/
+venv/
+ENV/
+
+# Output files
 output/
-assets/
+*.mp4
+*.mp3
+*.wav
+*.png
+*.jpg
+*.gif
+*.srt
+*.ass
+
+# IDE/Editor specific
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# OS specific
 .DS_Store
+Thumbs.db

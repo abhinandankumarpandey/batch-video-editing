@@ -1,1 +1,7 @@
 ffmpeg-python
+transformers
+torch
+torchaudio
+torchvision
+PySimpleGUI
+# Add other libraries as they become necessary, e.g., for specific image processing or audio tasks
